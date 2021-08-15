@@ -50,6 +50,7 @@ class Product(Parcel):
 
     # Sets the weight for the products by summing up the weight of each parcel
     def update_weight(self):
+        self.weight = 0
         for parcel in self.parcels:
             self.weight = self.weight + parcel.weight
 

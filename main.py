@@ -1,4 +1,6 @@
-from inkontor_resources.classes import Parcel, Product
+from inkontor_resources.classes.parcel import Parcel
+from inkontor_resources.classes.product import Product
+from inkontor_resources.functions import check_weight
 
 
 if __name__ == '__main__':
@@ -14,12 +16,12 @@ if __name__ == '__main__':
     product_2.add_parcel(parcel_1, product_2)
     product_2.add_parcel(parcel_3, product_2)
 
-    parcel_1.set_weight(31.49)
-    parcel_2.set_weight(19.9)
-    parcel_3.set_weight(20.6)
+    parcel_1.set_weight(check_weight(0, parcel_1))
+    # parcel_2.set_weight(19.9)
+    # parcel_3.set_weight(20.6)
 
-    print(f'Weight of product {product_1.sku} is {product_1.weight} kg')
-    print(f'Weight of product {product_2.sku} is {product_2.weight} kg')
+    # print(f'Weight of product {product_1.sku} is {product_1.weight} kg')
+    # print(f'Weight of product {product_2.sku} is {product_2.weight} kg')
 
     # product.get_parcels()
 

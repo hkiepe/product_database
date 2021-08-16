@@ -15,7 +15,8 @@ class Product(Parcel):
     def add_parcel(self, parcel, product):
         self.parcels.append(parcel)
         parcel.update_parcels(product)
-        print(f'{parcel.sku} added to {self.name} (sku: {self.sku})!')
+        for parcel in self.parcels:
+            print(f'parcel {parcel.sku} in {self.sku})!')
 
     # provide information which parcels the product holds
     def get_parcels(self):
@@ -23,7 +24,7 @@ class Product(Parcel):
         for parcel in self.parcels:
             print(f' - Sku: {parcel.sku}, Parcel name: {parcel.name}')
 
-    # Sets the weight for the products by summing up the weight of each parcel
+    # Sets the weight for the products by summing up the weight of each sub parcel
     def update_weight(self):
         self.weight = 0
         for parcel in self.parcels:

@@ -1,22 +1,30 @@
+import openpyxl, os, math
 from inkontor_resources.classes.parcel import Parcel
 from inkontor_resources.classes.product import Product
-from inkontor_resources.functions import check_weight
+from inkontor_resources.functions import check_weight, check_sub_parcels
+from inkontor_resources.constants import PROJECT_PATH, PARCELS_WORKBOOK, PARCELS_FILE
 
 
 if __name__ == '__main__':
-    product_1 = Product('07.10.00.00', 'BERG XL Extra Blue BFR')
+    # Check if all sub parcels have a corresponding product if not it will raise value error.
+    check_sub_parcels(PROJECT_PATH, PARCELS_FILE, PARCELS_WORKBOOK)
+
+    # Todo: Read in all products into objects from the source file and create a products array with all product objects.
+
+
+    # product_1 = Product('07.10.00.00', 'BERG XL Extra Blue BFR')
     # Todo: Check if product already exists by comparing the sku's of all products'
-    product_2 = Product('07.10.01.00', 'BERG XL Extra Sport Blue BFR')
-    parcel_1 = Parcel('07.50.00.01', 'BERG XL Frame BFR')
-    parcel_2 = Parcel('07.55.00.00', 'BERG Extra Blue Theme (excl. XL Frame)')
-    parcel_3 = Parcel('07.55.00.01', 'BERG Extra Sport Blue Theme (excl. XL Frame)')
+    # product_2 = Product('07.10.01.00', 'BERG XL Extra Sport Blue BFR')
+    # parcel_1 = Parcel('07.50.00.01', 'BERG XL Frame BFR')
+    # parcel_2 = Parcel('07.55.00.00', 'BERG Extra Blue Theme (excl. XL Frame)')
+    # parcel_3 = Parcel('07.55.00.01', 'BERG Extra Sport Blue Theme (excl. XL Frame)')
 
-    product_1.add_parcel(parcel_1, product_1)
-    product_1.add_parcel(parcel_2, product_1)
-    product_2.add_parcel(parcel_1, product_2)
-    product_2.add_parcel(parcel_3, product_2)
+    # product_1.add_parcel(parcel_1, product_1)
+    # product_1.add_parcel(parcel_2, product_1)
+    # product_2.add_parcel(parcel_1, product_2)
+    # product_2.add_parcel(parcel_3, product_2)
 
-    parcel_1.set_weight(check_weight(0, parcel_1))
+    # parcel_1.set_weight(check_weight(31.49, parcel_1))
     # parcel_2.set_weight(19.9)
     # parcel_3.set_weight(20.6)
 

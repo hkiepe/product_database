@@ -13,6 +13,7 @@ def check_weight(value, parcel):
         return value
 
 
+# Check if all sub parcels have a corresponding product if not it will raise value error.
 def check_sub_parcels(project_path, parcels_file, parcels_workbook):
     os.chdir(project_path)
     sku_workbook = openpyxl.load_workbook(parcels_file)

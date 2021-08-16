@@ -1,4 +1,5 @@
 import openpyxl, os, math
+from inkontor_resources.classes.product import Product
 
 
 # todo maybe this check should be included in the parcel class better?
@@ -27,7 +28,7 @@ def check_sub_parcels(project_path, parcels_file, parcels_workbook):
         if sku_sheet.cell(row=i, column=1).value not in products:
             products.append(sku_sheet.cell(row=i, column=1).value)
         # here we create the sub parcel array
-        for j in range(12, sku_sheet.max_row + 18):
+        for j in range(12, 18):
             if sku_sheet.cell(row=i, column=j).value is not None and sku_sheet.cell(row=i, column=j).value != '-':
                 if sku_sheet.cell(row=i, column=j).value not in parcels:
                     parcels.append(sku_sheet.cell(row=i, column=j).value)
@@ -35,3 +36,15 @@ def check_sub_parcels(project_path, parcels_file, parcels_workbook):
     for parcel in parcels:
         if parcel not in products:
             raise ValueError(f'{parcel} has no values in source file')
+
+
+# Read in all products into objects from the source file and create a products array with all product objects.
+def read_in_all_products(project_path, parcels_file, parcels_workbook):
+    os.chdir(project_path)
+    sku_workbook = openpyxl.load_workbook(parcels_file)
+    sku_sheet = sku_workbook[parcels_workbook]
+    products = []
+    # creates the products array with Products objects
+    for i in range(3, sku_sheet.max_row + 1):
+        products.append(Product(sku_sheet.cell(row=i, column=1).value, sku_sheet.cell(row=i, column=2).value))
+    return products

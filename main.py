@@ -1,18 +1,21 @@
 import openpyxl, os, math
 from inkontor_resources.classes.parcel import Parcel
 from inkontor_resources.classes.product import Product
-from inkontor_resources.functions import check_sub_parcels, read_in_all_products
+from inkontor_resources.functions import check_sub_parcels, read_in_all_products,read_in_all_parcels
 from inkontor_resources.constants import PROJECT_PATH, PARCELS_WORKBOOK, PARCELS_FILE
 
 
 if __name__ == '__main__':
-    # Check if all sub parcels have a corresponding product if not it will raise ValueError.
+    # Check if all sub parcels have a corresponding product in the Berg source file. If not it will raise ValueError.
     check_sub_parcels(PROJECT_PATH, PARCELS_FILE, PARCELS_WORKBOOK)
 
     # Read in all products into objects from the source file and create a products array with all product objects.
     products = read_in_all_products(PROJECT_PATH, PARCELS_FILE, PARCELS_WORKBOOK)
 
-    # ToDo Read in all parcels to the products
+    # Read in all parcels to the parcel objects and create a parcels array with all parcels
+    parcels = read_in_all_parcels(PROJECT_PATH, PARCELS_FILE, PARCELS_WORKBOOK)
+
+    # ToDo add parcels to product
 
     # product_1 = Product('07.10.00.00', 'BERG XL Extra Blue BFR')
     # Todo: Check if product already exists by comparing the sku's of all products'

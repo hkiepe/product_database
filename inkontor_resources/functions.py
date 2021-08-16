@@ -1,5 +1,6 @@
 import openpyxl, os, math
 from inkontor_resources.classes.product import Product
+from inkontor_resources.classes.parcel import Parcel
 
 
 # todo maybe this check should be included in the parcel class better?
@@ -48,3 +49,26 @@ def read_in_all_products(project_path, parcels_file, parcels_workbook):
     for i in range(3, sku_sheet.max_row + 1):
         products.append(Product(sku_sheet.cell(row=i, column=1).value, sku_sheet.cell(row=i, column=2).value))
     return products
+
+
+# Read in all parcels to the parcel objects and create a parcels array with all parcels
+def read_in_all_parcels(project_path, parcels_file, parcels_workbook):
+    os.chdir(project_path)
+    sku_workbook = openpyxl.load_workbook(parcels_file)
+    sku_sheet = sku_workbook[parcels_workbook]
+    parcels_sku = []
+    parcels = []
+    # First we grab all the sub parcels sku in one array. Then we iterate the array to create the sub parcels with
+    # values from source file
+    for i in range(3, sku_sheet.max_row + 1):
+        # here we create the parcels_sku array
+        for j in range(12, 18):
+            if sku_sheet.cell(row=i, column=j).value is not None and sku_sheet.cell(row=i, column=j).value != '-':
+                if sku_sheet.cell(row=i, column=j).value not in parcels_sku:
+                    parcels_sku.append(sku_sheet.cell(row=i, column=j).value)
+    # now we iterate through the source file and when we find an sku which is also in parcels_sku array we create the
+    # parcel object.
+    for i in range(3, sku_sheet.max_row + 1):
+        if sku_sheet.cell(row=i, column=1).value in parcels_sku:
+            parcels.append(Parcel(sku_sheet.cell(row=i, column=1).value, sku_sheet.cell(row=i, column=2).value))
+    return parcels

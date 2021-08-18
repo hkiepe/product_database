@@ -194,10 +194,10 @@ def set_parcel_prices(parcels, prices):
     return parcels
 
 
-def create_excel(products):
+def create_excel(products, sheet, target_file):
     price_list = openpyxl.Workbook()
     price_list.sheetnames
-    sheet = price_list.get_sheet_by_name('Sheet')
+    sheet = price_list.get_sheet_by_name(sheet)
     sheet.cell(row=1, column=1).value = 'Product SKU'
     sheet.cell(row=1, column=2).value = 'Product name'
     sheet.cell(row=1, column=3).value = 'Weight out of range'
@@ -218,5 +218,5 @@ def create_excel(products):
         #    if price == 'Niemcy (6)':
         #        sheet.cell(row=i, column=3).value = price[product.prices]
         i = i + 1
-    price_list.save('parcel_prices.xlsx')
+    price_list.save(target_file)
     price_list.close()

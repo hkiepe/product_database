@@ -192,3 +192,31 @@ def set_parcel_prices(parcels, prices):
                 shipment_price_parcel[price.country] = 0
         parcel.set_price(shipment_price_parcel)
     return parcels
+
+
+def create_excel(products):
+    price_list = openpyxl.Workbook()
+    price_list.sheetnames
+    sheet = price_list.get_sheet_by_name('Sheet')
+    sheet.cell(row=1, column=1).value = 'Product SKU'
+    sheet.cell(row=1, column=2).value = 'Product name'
+    sheet.cell(row=1, column=3).value = 'Weight out of range'
+    sheet.cell(row=1, column=4).value = 'Price Germany'
+    sheet.cell(row=1, column=5).value = 'Price France'
+    sheet.cell(row=1, column=6).value = 'Price Italy'
+    sheet.cell(row=1, column=7).value = 'Price Spain'
+    i = 2
+    for product in products:
+        sheet.cell(row=i, column=1).value = product.sku
+        sheet.cell(row=i, column=2).value = product.name
+        sheet.cell(row=i, column=3).value = product.weight_out_of_range
+        sheet.cell(row=i, column=4).value = product.prices['Niemcy (6)']
+        sheet.cell(row=i, column=5).value = product.prices['Francja I (kontynent)']
+        sheet.cell(row=i, column=6).value = product.prices['Włochy']
+        sheet.cell(row=i, column=7).value = product.prices['Hiszpania I (kontynent)']
+        # for price in product.prices:
+        #    if price == 'Niemcy (6)':
+        #        sheet.cell(row=i, column=3).value = price[product.prices]
+        i = i + 1
+    price_list.save('parcel_prices.xlsx')
+    price_list.close()

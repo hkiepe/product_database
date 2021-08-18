@@ -1,5 +1,6 @@
 from inkontor_resources.functions import check_sub_parcels, read_in_all_products,read_in_all_parcels,\
-    add_parcels_to_product, add_weight, create_prices, set_out_of_range, set_parcel_prices, set_product_prices
+    add_parcels_to_product, add_weight, create_prices, set_out_of_range, set_parcel_prices, set_product_prices,\
+    create_excel
 from inkontor_resources.constants import PROJECT_PATH, PARCELS_WORKBOOK, PARCELS_FILE, PRICE_FILE_GLS,\
     PRICE_WORKBOOK_GLS
 
@@ -31,12 +32,13 @@ if __name__ == '__main__':
     set_product_prices(products, prices)
     set_parcel_prices(parcels, prices)
 
+
+    create_excel(products)
+
     for product in products:
         print(f'Sku: {product.sku}, Name:{product.name}, Weight: {product.weight}, Flag: {product.weight_out_of_range}')
-        # for parcel in product.parcels:
-        #     print(f' - Sku: {parcel.sku}, Name: {parcel.name}, Weight: {parcel.weight},'
-        #           f'Flag: {parcel.weight_out_of_range}')
-        #     print(f' - {parcel.prices}')
+        for parcel in product.parcels:
+            print(f' - Sku: {parcel.sku}, Name: {parcel.name}, Weight: {parcel.weight},'
+                  f'Flag: {parcel.weight_out_of_range}')
+            print(f' - {parcel.prices}')
         print(product.prices)
-
-

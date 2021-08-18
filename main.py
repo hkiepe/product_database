@@ -1,8 +1,7 @@
-import openpyxl, os, math
-from inkontor_resources.classes.parcel import Parcel
-from inkontor_resources.classes.product import Product
-from inkontor_resources.functions import check_sub_parcels, read_in_all_products,read_in_all_parcels
-from inkontor_resources.constants import PROJECT_PATH, PARCELS_WORKBOOK, PARCELS_FILE
+from inkontor_resources.functions import check_sub_parcels, read_in_all_products,read_in_all_parcels,\
+    add_parcels_to_product, add_weight, create_prices, set_out_of_range, set_parcel_prices, set_product_prices
+from inkontor_resources.constants import PROJECT_PATH, PARCELS_WORKBOOK, PARCELS_FILE, PRICE_FILE_GLS,\
+    PRICE_WORKBOOK_GLS
 
 
 if __name__ == '__main__':
@@ -15,29 +14,29 @@ if __name__ == '__main__':
     # Read in all parcels to the parcel objects and create a parcels array with all parcels
     parcels = read_in_all_parcels(PROJECT_PATH, PARCELS_FILE, PARCELS_WORKBOOK)
 
-    # ToDo add parcels to product
+    # Add parcels to product
+    add_parcels_to_product(PROJECT_PATH, PARCELS_FILE, PARCELS_WORKBOOK, products, parcels)
 
-    # product_1 = Product('07.10.00.00', 'BERG XL Extra Blue BFR')
-    # Todo: Check if product already exists by comparing the sku's of all products'
-    # product_2 = Product('07.10.01.00', 'BERG XL Extra Sport Blue BFR')
-    # parcel_1 = Parcel('07.50.00.01', 'BERG XL Frame BFR')
-    # parcel_2 = Parcel('07.55.00.00', 'BERG Extra Blue Theme (excl. XL Frame)')
-    # parcel_3 = Parcel('07.55.00.01', 'BERG Extra Sport Blue Theme (excl. XL Frame)')
+    # Add weight to parcels and to products which don't have sub parcels
+    add_weight(PROJECT_PATH, PARCELS_FILE, PARCELS_WORKBOOK, products, parcels)
 
-    # product_1.add_parcel(parcel_1, product_1)
-    # product_1.add_parcel(parcel_2, product_1)
-    # product_2.add_parcel(parcel_1, product_2)
-    # product_2.add_parcel(parcel_3, product_2)
+    # Create the price instances from class PriceGls
+    prices = create_prices(PROJECT_PATH, PRICE_FILE_GLS, PRICE_WORKBOOK_GLS)
 
-    # parcel_1.set_weight(check_weight(31.49, parcel_1))
-    # parcel_2.set_weight(19.9)
-    # parcel_3.set_weight(20.6)
+    # Set 'parcel weight out of range' flag for parcels and products, if weight is too heavy for the parcel forwarder
+    set_out_of_range(products, parcels)
 
-    # print(f'Weight of product {product_1.sku} is {product_1.weight} kg')
-    # print(f'Weight of product {product_2.sku} is {product_2.weight} kg')
+    # Set prices for parcels and products without sub parcels, for all parcels and products, where out of range flag is
+    # not set to True
+    set_product_prices(products, prices)
+    set_parcel_prices(parcels, prices)
 
-    # product.get_parcels()
+    for product in products:
+        print(f'Sku: {product.sku}, Name:{product.name}, Weight: {product.weight}, Flag: {product.weight_out_of_range}')
+        # for parcel in product.parcels:
+        #     print(f' - Sku: {parcel.sku}, Name: {parcel.name}, Weight: {parcel.weight},'
+        #           f'Flag: {parcel.weight_out_of_range}')
+        #     print(f' - {parcel.prices}')
+        print(product.prices)
 
-    # product.get_info()
-    # parcel_1.get_info()
-    # parcel_2.get_info()
+
